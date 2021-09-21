@@ -50,10 +50,13 @@ class _MyHomePageState extends State<MyHomePage> {
     return;
   }
   void putData() async {
-    await box?.put("name", "yash").onError((error, stackTrace){
+    DataModel data = DataModel(title: "yash",description: "xyz",complete: true);
+    //await box?.put("name", "yash").onError((error, stackTrace){
+    await box?.add(data).onError((error, stackTrace){
       setState(() {
         resultValue = error.toString();
       });
+      return 0;
     }).whenComplete((){
       setState(() {
         resultValue = "Successfully putted value!";
@@ -62,7 +65,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   }
   void deleteData() async {
-    await box?.delete('name').onError((error, stackTrace){
+    //await box?.delete('name').onError((error, stackTrace){
+    bool? existence = box?.isEmpty;
+    if(existence!=null && existence == true){
+      setState(() {
+        resultValue = "Null";
+      });
+      return;
+    }
+    await box?.deleteAt(0).onError((error, stackTrace){
       setState(() {
         resultValue = error.toString();
       });
@@ -73,7 +84,16 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
   void updateData() async {
-    await box?.put("name", "Coder").onError((error, stackTrace){
+    //await box?.put("name", "Coder").onError((error, stackTrace){
+    bool? existence = box?.isEmpty;
+    if(existence!=null && existence == true){
+      setState(() {
+        resultValue = "Null";
+      });
+      return;
+    }
+    DataModel data = DataModel(title: "mathur",description: "zvc",complete: false);
+    await box?.putAt(0, data).onError((error, stackTrace){
       setState(() {
         resultValue = error.toString();
       });
@@ -84,11 +104,19 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
   void getData() async  {
-    var data = await box?.get('name');
+    //var data = await box?.get('name');
+    bool? existence = box?.isEmpty;
+    if(existence!=null && existence == true){
+      setState(() {
+        resultValue = "Null";
+      });
+      return;
+    }
+    DataModel? data = await box?.getAt(0);
     setState(() {
 
       if(data!=null){
-        resultValue = data;
+        resultValue = "${data.title} ${data.description} ${data.complete}";
       }
       else{
         resultValue = "Null";
