@@ -1,6 +1,6 @@
 # hiveintegration
 
-A simple app which uses hive and CRUD operation on hive!
+A simple dart app which uses hive and CRUD operation on hive!
 
 ## Getting Started
 
